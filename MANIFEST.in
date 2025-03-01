@@ -1,0 +1,6 @@
+include arch3d/profile/*
+include arch3d/profile/slurm/*
+include arch3d/profile/local/*
+include arch3d/workflow/*
+include arch3d/workflow/rules/*
+include arch3d/workflow/scripts/*
