@@ -1,0 +1,4 @@
+configfile: "workflow/config.yaml"
+WORKFLOW = config.get("workflow", None)
+OUTPUT_DIR = config.get("output_dir", None)
+
