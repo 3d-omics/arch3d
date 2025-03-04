@@ -176,10 +176,9 @@ def process_tsv(input_tsv, output_dir, username, password):
             # If accession exists, only update the sample
             print(f"Updating existing sample: {accession}")
 
-            sample_name_updated = f"{sample_name}_updated"
             updated_json = {
                 "accession": accession,
-                "name": sample_name_updated,
+                "name": sample_name,
                 "release": row["release"],
                 "webinSubmissionAccountId": row["webinSubmissionAccountId"],
                 "taxId": str(row["taxId"]),
@@ -223,10 +222,9 @@ def process_tsv(input_tsv, output_dir, username, password):
                 save_json(response_json, output_dir, f"{sample_name}_original.json")
 
                 # Now update the sample with relationships
-                sample_name_updated = f"{sample_name}_updated"
                 updated_json = {
                     "accession": accession,
-                    "name": sample_name_updated,
+                    "name": sample_name,
                     "release": row["release"],
                     "webinSubmissionAccountId": row["webinSubmissionAccountId"],
                     "taxId": str(row["taxId"]),
