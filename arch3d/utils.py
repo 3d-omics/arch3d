@@ -61,14 +61,14 @@ def create_sample_checklists(sample_checklist: str, output_dir: str):
 
 def create_data_dict(metadata: str, directory: str, output_json: str):
     df = pd.read_csv(metadata, sep='\t')
-        sample_dict = {
+    sample_dict = {
         row['alias']: [
             os.path.abspath(os.path.join(directory, row['forward_file'])),
             os.path.abspath(os.path.join(directory, row['reverse_file']))
         ]
         for _, row in df.iterrows()
     }
-        with open(output_json, 'w') as json_file:
+    with open(output_json, 'w') as json_file:
         json.dump(sample_dict, json_file, indent=4)
 
 ######
