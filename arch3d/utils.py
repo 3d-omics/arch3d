@@ -212,6 +212,7 @@ def process_tsv(input_tsv, output_dir, username, password):
             print(sample_json)
 
             response = post_sample(sample_json, token)
+            print(response)
 
             if response.status_code == 201:  # Success
                 response_json = response.json()
