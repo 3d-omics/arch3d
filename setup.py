@@ -11,8 +11,7 @@ setup(
     install_requires=[
         "numpy",
         "pandas",
-        "argparse",
-        "json"
+        "argparse"
     ],
     entry_points={
         "console_scripts": [

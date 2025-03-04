@@ -2,6 +2,10 @@
 
 **Arch3d** is a Python software for archiving 3D'omics data and metadata in the public EBI databases ENA, BioSamples, Bioarchive Image and Metabolights.
 
+```
+pip install git+https://github.com/3d-omics/arch3d.git
+```
+
 ## Upload of nucleotide data to ENA
 
 ```
