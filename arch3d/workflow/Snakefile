@@ -2,3 +2,45 @@ configfile: "workflow/config.yaml"
 WORKFLOW = config.get("workflow", None)
 OUTPUT_DIR = config.get("output_dir", None)
 
+if WORKFLOW == "nucleotide":
+
+    # Read JSON containing sample to data file references
+    with open(f"{OUTPUT_DIR}/input/input.json", "r") as f:
+        SAMPLE_TO_READS = json.load(f)
+
+    # Create list of samples for wildcards
+    samples = list(SAMPLE_TO_READS.keys())
+
+    rule all:
+        input:
+            expand(f"{OUTPUT_DIR}/output/{{sample}}/receipt.xml", sample=samples)
+
+    rule upload:
+        input:
+            data=lambda wildcards: SAMPLE_TO_READS[wildcards.sample],
+            sample=f"{OUTPUT_DIR}/checklists/sample/{{sample}}.tsv",
+            experiment=f"{OUTPUT_DIR}/checklists/experiment/{{sample}}.tsv",
+            run=f"{OUTPUT_DIR}/checklists/run/{{sample}}.tsv",
+            secret=f"{OUTPUT_DIR}/input/.secret.yml"
+        output:
+            f"{OUTPUT_DIR}/output/{{sample}}/receipt.xml"
+        threads:
+            1
+        resources:
+            mem_mb=lambda wildcards, input, attempt: max(8*1024, int(input.size_mb * 5) * 2 ** (attempt - 1)),
+            runtime=lambda wildcards, input, attempt: max(10, int(input.size_mb / 100) * 2 ** (attempt - 1))
+        shell:
+            """
+            module load
+            ena-upload-cli \
+                --action add \
+                --center 'University of Copenhagen' \
+                --sample {input.sample} \
+                --experiment {input.experiment} \
+                --run {input.run} \
+                --checklist ERC000013 \
+                --data {input.data} \
+                --secret {secret}
+            """
+
+if WORKFLOW == "sample":
