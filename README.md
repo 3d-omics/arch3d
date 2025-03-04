@@ -4,6 +4,8 @@
 
 ```
 pip install git+https://github.com/3d-omics/arch3d.git
+
+pip uninstall arch3d -y
 ```
 
 ## Upload of nucleotide data to ENA
