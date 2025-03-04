@@ -5,6 +5,7 @@ import subprocess
 import yaml
 import re
 import json
+import requests
 import pandas as pd
 from pathlib import Path
 from collections import defaultdict
@@ -47,7 +48,7 @@ def main():
     subparser_nucleotide.add_argument("-p", "--password", required=True, help="EBI Webin password")
 
     subparser_sample = subparsers.add_parser("sample", help="Upload sample metadata to BioSamples")
-    subparser_sample.add_argument("-i", "--input", required=False, help="Input metadata table")
+    subparser_sample.add_argument("-i", "--input", required=True, help="Input metadata table")
     subparser_sample.add_argument("-o", "--output", required=True, help="Output directory")
     subparser_sample.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
     subparser_sample.add_argument("-p", "--password", required=True, help="EBI Webin password")
