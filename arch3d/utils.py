@@ -178,7 +178,7 @@ def process_tsv(input_tsv, output_dir, username, password):
 
             updated_json = {
                 "accession": accession,
-                "name": sample_name,
+                "name": row["name"],
                 "release": row["release"],
                 "webinSubmissionAccountId": row["webinSubmissionAccountId"],
                 "taxId": str(row["taxId"]),
@@ -224,7 +224,7 @@ def process_tsv(input_tsv, output_dir, username, password):
                 # Now update the sample with relationships
                 updated_json = {
                     "accession": accession,
-                    "name": sample_name,
+                    "name": row["name"],
                     "release": row["release"],
                     "webinSubmissionAccountId": row["webinSubmissionAccountId"],
                     "taxId": str(row["taxId"]),
