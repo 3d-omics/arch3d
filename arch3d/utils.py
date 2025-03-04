@@ -216,6 +216,7 @@ def process_tsv(input_tsv, output_dir, username, password):
             if response.status_code == 201:  # Success
                 response_json = response.json()
                 accession = response_json.get("accession")
+                df["accession"] = df["accession"].astype(str)
                 df.at[index, "accession"] = accession  # Store accession in DataFrame
 
                 # Save original response JSON
