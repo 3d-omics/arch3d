@@ -209,11 +209,10 @@ def process_tsv(input_tsv, output_dir, username, password):
         else:
             # If accession does not exist, create a new BioSample
             print(f"Creating new sample: {sample_name}")
-            print(sample_json)
 
             response = post_sample(sample_json, token)
-            print(response)
 
+            #If initial request is successful
             if response.status_code == 201:  # Success
                 response_json = response.json()
                 accession = response_json.get("accession")
@@ -252,6 +251,8 @@ def process_tsv(input_tsv, output_dir, username, password):
                     save_json(update_response_json, output_dir, f"{sample_name}_update.json")
                 else:
                     save_json({"error": update_response.text}, output_dir, f"{sample_name}_update.json")
+
+            #If initial request yields an error
             else:
                  save_json({"error": response.text}, output_dir, f"{sample_name}.json")
 
