@@ -252,6 +252,8 @@ def process_tsv(input_tsv, output_dir, username, password):
                     save_json(update_response_json, output_dir, f"{sample_name}_update.json")
                 else:
                     save_json({"error": update_response.text}, output_dir, f"{sample_name}_update.json")
+            else:
+                 save_json({"error": response.text}, output_dir, f"{sample_name}.json")
 
     # Save updated TSV with accession numbers
     updated_tsv_path = os.path.join(output_dir, "updated_" + os.path.basename(input_tsv))
