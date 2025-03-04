@@ -1,0 +1,64 @@
+{
+  "name": "J024eD104A",
+  "accession": "SAMEA117789494",
+  "sraAccession": "ERS23775681",
+  "webinSubmissionAccountId": "Webin-69627",
+  "taxId": 9823,
+  "status": "PUBLIC",
+  "release": "2025-01-01T15:41:46.085Z",
+  "update": "2025-03-04T05:40:00.922Z",
+  "submitted": "2025-03-04T05:29:51.798Z",
+  "characteristics": {
+    "SRA accession": [
+      {
+        "text": "ERS23775681"
+      }
+    ],
+    "bioproject": [
+      {
+        "text": "PRJEB86267"
+      }
+    ],
+    "checklist": [
+      {
+        "text": "BSDC00001"
+      }
+    ],
+    "organism": [
+      {
+        "text": "Sus scrofa"
+      }
+    ],
+    "project": [
+      {
+        "text": "3D-omics"
+      }
+    ],
+    "tissue": [
+      {
+        "text": "Caecum"
+      }
+    ]
+  },
+  "submittedVia": "JSON_API",
+  "create": "2025-03-04T05:29:51.798Z",
+  "_links": {
+    "self": {
+      "href": "https://www.ebi.ac.uk/biosamples/samples/SAMEA117789494"
+    },
+    "applyCurations": {
+      "href": "https://www.ebi.ac.uk/biosamples/samples/SAMEA117789494{?applyCurations}",
+      "templated": true
+    },
+    "curationLinks": {
+      "href": "https://www.ebi.ac.uk/biosamples/samples/SAMEA117789494/curationlinks"
+    },
+    "curationLink": {
+      "href": "https://www.ebi.ac.uk/biosamples/samples/SAMEA117789494/curationlinks/{hash}",
+      "templated": true
+    },
+    "structuredData": {
+      "href": "https://www.ebi.ac.uk/biosamples/structureddata/SAMEA117789494"
+    }
+  }
+}

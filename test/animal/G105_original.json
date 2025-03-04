@@ -1,0 +1,69 @@
+{
+  "name": "G105",
+  "accession": "SAMEA117789495",
+  "sraAccession": "ERS23775682",
+  "webinSubmissionAccountId": "Webin-69627",
+  "taxId": 9031,
+  "status": "PUBLIC",
+  "release": "2025-01-01T15:41:46.085Z",
+  "update": "2025-03-04T05:46:32.620Z",
+  "submitted": "2025-03-04T05:46:32.620Z",
+  "characteristics": {
+    "SRA accession": [
+      {
+        "text": "ERS23775682"
+      }
+    ],
+    "bioproject": [
+      {
+        "text": "PRJEB86267"
+      }
+    ],
+    "checklist": [
+      {
+        "text": "BSDC00001"
+      }
+    ],
+    "organism": [
+      {
+        "text": "Gallus gallus"
+      }
+    ],
+    "project": [
+      {
+        "text": "3D-omics"
+      }
+    ],
+    "treatment": [
+      {
+        "text": "female"
+      }
+    ],
+    "trial": [
+      {
+        "text": "PRJEB86258"
+      }
+    ]
+  },
+  "submittedVia": "JSON_API",
+  "create": "2025-03-04T05:46:32.620Z",
+  "_links": {
+    "self": {
+      "href": "https://www.ebi.ac.uk/biosamples/samples"
+    },
+    "applyCurations": {
+      "href": "https://www.ebi.ac.uk/biosamples/samples{?applyCurations}",
+      "templated": true
+    },
+    "curationLinks": {
+      "href": "https://www.ebi.ac.uk/biosamples/samples/SAMEA117789495/curationlinks"
+    },
+    "curationLink": {
+      "href": "https://www.ebi.ac.uk/biosamples/samples/SAMEA117789495/curationlinks/{hash}",
+      "templated": true
+    },
+    "structuredData": {
+      "href": "https://www.ebi.ac.uk/biosamples/structureddata/SAMEA117789495"
+    }
+  }
+}
