@@ -209,6 +209,7 @@ def process_tsv(input_tsv, output_dir, username, password):
         else:
             # If accession does not exist, create a new BioSample
             print(f"Creating new sample: {sample_name}")
+            print(sample_json)
 
             response = post_sample(sample_json, token)
 
