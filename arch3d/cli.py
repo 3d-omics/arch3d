@@ -33,7 +33,7 @@ config_vars = load_config()
 
 def run_snakemake(workflow, output_dir, profile):
     snakemake_command = [
-        "/bin/bash", "-c",  # Ensures the module system works properly
+        "/bin/bash", "-c",
         f"module load {config_vars['SNAKEMAKE_MODULE']} && "
         "snakemake "
         f"-s {PACKAGE_DIR / 'workflow' / 'Snakefile'} "
@@ -106,18 +106,18 @@ def main():
     input_dir.mkdir(parents=True, exist_ok=True)
 
     if args.command == "macro":
-        create_secret(args.username, args.password, str(args.output / 'input' / '.secret.yml'))
-        create_data_dict(args.metadata, args.data, str(args.output / 'input' / 'input.json'))
-        create_run_checklists(args.metadata, str(args.output / 'checklists' / 'run'))
-        create_experiment_checklists(args.metadata, str(args.output / 'checklists' / 'experiment'))
-        create_sample_checklists(args.metadata, str(args.output / 'checklists' / 'sample'))
+        create_secret(args.username, args.password, str(Path(args.output).resolve() / 'input' / '.secret.yml'))
+        create_data_dict(args.metadata, args.data, str(Path(args.output).resolve() / 'input' / 'input.json'))
+        create_run_checklists(args.metadata, str(Path(args.output).resolve() / 'checklists' / 'run'))
+        create_experiment_checklists(args.metadata, str(Path(args.output).resolve() / 'checklists' / 'experiment'))
+        create_sample_checklists(args.metadata, str(Path(args.output).resolve() / 'checklists' / 'sample'))
 
     if args.command == "micro":
-        create_secret(args.username, args.password, str(args.output / 'input' / '.secret.yml'))
-        create_data_dict(args.metadata, args.data, str(args.output / 'input' / 'input.json'))
-        create_run_checklists(args.metadata, str(args.output / 'checklists' / 'run'))
-        create_experiment_checklists(args.metadata, str(args.output / 'checklists' / 'experiment'))
-        create_microsample_checklists(args.metadata, str(args.output / 'checklists' / 'sample'))
+        create_secret(args.username, args.password, str(Path(args.output).resolve() / 'input' / '.secret.yml'))
+        create_data_dict(args.metadata, args.data, str(Path(args.output).resolve() / 'input' / 'input.json'))
+        create_run_checklists(args.metadata, str(Path(args.output).resolve() / 'checklists' / 'run'))
+        create_experiment_checklists(args.metadata, str(Path(args.output).resolve() / 'checklists' / 'experiment'))
+        create_microsample_checklists(args.metadata, str(Path(args.output).resolve() / 'checklists' / 'sample'))
 
     ###
     # Specimen metadata
@@ -136,7 +136,7 @@ def main():
     # Launch snakemake
     ###
 
-    run_snakemake(args.command, args.output, 'slurm')
+    run_snakemake(args.command, Path(args.output).resolve(), 'slurm')
 
 if __name__ == "__main__":
     main()
