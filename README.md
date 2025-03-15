@@ -4,11 +4,16 @@
 
 ## Installation
 
-**Arch3d** can be installed using pip directly from this github repository.
+**Arch3d** can be installed using pip directly from this github repository. You might need to create a conda environment to ensure all dependencies are accessible.
 
 ```
+conda create -n arch3d python=3.12 pip -y
+
+conda activate arch3d
+
 pip install git+https://github.com/3d-omics/arch3d.git
 
+#if you need to uninstall it:
 pip uninstall arch3d -y
 ```
 

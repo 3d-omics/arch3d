@@ -12,7 +12,8 @@ setup(
         "numpy",
         "pandas",
         "argparse",
-        "PyYAML"
+        "PyYAML",
+        "requests"
     ],
     entry_points={
         "console_scripts": [
