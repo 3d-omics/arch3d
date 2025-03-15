@@ -109,7 +109,7 @@ def main():
 
     # Arguments for unlock
     subparser_unlock = subparsers.add_parser("unlock", help="Unlock output directory")
-    subparser_unlock.add_argument("-o", "--output", required=False, default=os.getcwd(), help="Output directory. Default is the directory from which drakkar is called.")
+    subparser_unlock.add_argument("-o", "--output", required=False, type=pathlib.Path, default=os.getcwd(), help="Output directory. Default is the directory from which drakkar is called.")
 
     args = parser.parse_args()
 
