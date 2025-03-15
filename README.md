@@ -29,6 +29,8 @@ The most straightforward usage is to:
 
 ### Upload nucleic acid data to ENA
 
+The commands upload data and metadata and yield a table with the run, experiment, sample and biosample accession numbers.
+
 #### Macro-scale data
 
 This commands uploads the raw macro-scale data and the required metadata to **ENA**. The metadata columns are defined and must be strictly followed for the sake of standardisation.
