@@ -1,3 +1,13 @@
+import os
+import gzip
+import json
+import pandas as pd
+from glob import glob
+
+####
+# Define config variables
+####
+
 configfile: "workflow/config.yaml"
 WORKFLOW = config.get("workflow", None)
 OUTPUT_DIR = config.get("output_dir", None)
