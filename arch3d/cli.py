@@ -31,6 +31,21 @@ config_vars = load_config()
 # Function definitions
 #####
 
+def unlock_snakemake(output_dir, profile):
+    unlock_command = [
+        "/bin/bash", "-c",  # Ensures the module system works properly
+        f"module load {config_vars['SNAKEMAKE_MODULE']} && "
+        "snakemake "
+        f"-s {PACKAGE_DIR / 'workflow' / 'Snakefile'} "
+        f"--directory {output_dir} "
+        f"--configfile {CONFIG_PATH} "
+        f"--workflow-profile {PACKAGE_DIR / 'profile' / profile} "
+        f"--unlock"
+    ]
+
+    subprocess.run(unlock_command, shell=False, check=True)
+    print(f"The output directory {output_dir} has been succesfully unlocked.")
+
 def run_snakemake(workflow, output_dir, profile):
     snakemake_command = [
         "/bin/bash", "-c",
@@ -92,6 +107,10 @@ def main():
     subparser_animal.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
     subparser_animal.add_argument("-p", "--password", required=True, help="EBI Webin password")
 
+    # Arguments for unlock
+    subparser_unlock = subparsers.add_parser("unlock", help="Unlock output directory")
+    subparser_unlock.add_argument("-o", "--output", required=False, default=os.getcwd(), help="Output directory. Default is the directory from which drakkar is called.")
+
     args = parser.parse_args()
 
     if len(sys.argv) == 1:
@@ -111,6 +130,7 @@ def main():
         create_run_checklists(args.metadata, str(Path(args.output).resolve() / 'checklists' / 'run'))
         create_experiment_checklists(args.metadata, str(Path(args.output).resolve() / 'checklists' / 'experiment'))
         create_sample_checklists(args.metadata, str(Path(args.output).resolve() / 'checklists' / 'sample'))
+        run_snakemake(args.command, Path(args.output).resolve(), 'slurm')
 
     if args.command == "micro":
         create_secret(args.username, args.password, str(Path(args.output).resolve() / 'input' / '.secret.yml'))
@@ -118,6 +138,7 @@ def main():
         create_run_checklists(args.metadata, str(Path(args.output).resolve() / 'checklists' / 'run'))
         create_experiment_checklists(args.metadata, str(Path(args.output).resolve() / 'checklists' / 'experiment'))
         create_microsample_checklists(args.metadata, str(Path(args.output).resolve() / 'checklists' / 'sample'))
+        run_snakemake(args.command, Path(args.output).resolve(), 'slurm')
 
     ###
     # Specimen metadata
@@ -125,18 +146,22 @@ def main():
 
     if args.command == "cryosection":
         process_cryosection(args.input, args.output, args.username, args.password)
+        run_snakemake(args.command, Path(args.output).resolve(), 'slurm')
 
     if args.command == "section":
         process_section(args.input, args.output, args.username, args.password)
+        run_snakemake(args.command, Path(args.output).resolve(), 'slurm')
 
     if args.command == "animal":
         process_animal(args.input, args.output, args.username, args.password)
+        run_snakemake(args.command, Path(args.output).resolve(), 'slurm')
 
     ###
-    # Launch snakemake
+    # Unlock
     ###
 
-    run_snakemake(args.command, Path(args.output).resolve(), 'slurm')
+    if args.command == "unlock":
+        unlock_snakemake(Path(args.output).resolve(), 'slurm')
 
 if __name__ == "__main__":
     main()
