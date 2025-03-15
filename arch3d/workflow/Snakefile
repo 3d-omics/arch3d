@@ -11,6 +11,7 @@ from glob import glob
 configfile: "workflow/config.yaml"
 WORKFLOW = config.get("workflow", None)
 OUTPUT_DIR = config.get("output_dir", None)
+PACKAGE_DIR = config["package_dir"]
 
 if WORKFLOW in ["macro", "micro"]:
 
@@ -23,7 +24,7 @@ if WORKFLOW in ["macro", "micro"]:
 
     rule all:
         input:
-            expand(f"{OUTPUT_DIR}/output/{{sample}}/receipt.xml", sample=samples)
+            f"{OUTPUT_DIR}/submission_table.tsv"
 
     rule upload:
         input:
@@ -54,4 +55,21 @@ if WORKFLOW in ["macro", "micro"]:
                 --checklist ERC000013 \
                 --data {input.data} \
                 --secret {input.secret}
+            """
+
+    rule merge_output:
+        input:
+            expand(f"{OUTPUT_DIR}/output/{{sample}}/receipt.xml", sample=samples)
+        output:
+            f"{OUTPUT_DIR}/submission_table.tsv"
+        params:
+            package_dir={PACKAGE_DIR}
+        threads:
+            1
+        resources:
+            mem_mb=lambda wildcards, input, attempt: max(8*1024, int(input.size_mb * 5) * 2 ** (attempt - 1)),
+            runtime=lambda wildcards, input, attempt: max(2, int(input.size_mb / 100) * 2 ** (attempt - 1))
+        shell:
+            """
+            python {params.package_dir}/workflow/scripts/merge_output.py {input} {output}
             """
