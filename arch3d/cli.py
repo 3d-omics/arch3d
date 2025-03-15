@@ -91,14 +91,14 @@ def main():
 
     if args.command == "macro":
         create_secret(args.username, args.password, str(args.output / 'input' / '.secret.yml'))
-        create_data_dict(args.metadata, args.data, {args.output / 'input' / 'input.json'})
+        create_data_dict(args.metadata, args.data, str(args.output / 'input' / 'input.json'))
         create_run_checklists(args.metadata, {args.output / 'checklists' / 'run'})
         create_experiment_checklists(args.metadata, {args.output / 'checklists' / 'experiment'})
         create_sample_checklists(args.metadata, {args.output / 'checklists' / 'sample'})
 
     if args.command == "micro":
         create_secret(args.username, args.password, str(args.output / 'input' / '.secret.yml'))
-        create_data_dict(args.metadata, args.data, {args.output / 'input' / 'input.json'})
+        create_data_dict(args.metadata, args.data, str(args.output / 'input' / 'input.json'))
         create_run_checklists(args.metadata, {args.output / 'checklists' / 'run'})
         create_experiment_checklists(args.metadata, {args.output / 'checklists' / 'experiment'})
         create_microsample_checklists(args.metadata, {args.output / 'checklists' / 'sample'})
