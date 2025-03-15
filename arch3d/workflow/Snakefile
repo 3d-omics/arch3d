@@ -34,6 +34,8 @@ if WORKFLOW in ["macro", "micro"]:
             secret=f"{OUTPUT_DIR}/input/.secret.yml"
         output:
             f"{OUTPUT_DIR}/output/{{sample}}/receipt.xml"
+        params:
+            outdir=f"{OUTPUT_DIR}/output/{{sample}}"
         threads:
             1
         resources:
@@ -42,6 +44,7 @@ if WORKFLOW in ["macro", "micro"]:
         shell:
             """
             module load ena-upload-cli/0.8.0
+            cd {params.outdir}
             ena-upload-cli \
                 --action add \
                 --center 'University of Copenhagen' \
