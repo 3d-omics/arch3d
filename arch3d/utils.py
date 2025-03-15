@@ -25,21 +25,21 @@ def create_secret(username: str, password: str, output_file: str):
         yaml.dump(data, file, default_flow_style=False)
 
 # Create separate run checklist files for each sample
-def create_run_checklists(experiment_checklist: str, output_dir: str):
+def create_run_checklists(input_tsv: str, output_dir: str):
     df = pd.read_csv(input_tsv, sep='\t')
     os.makedirs(output_dir, exist_ok=True)
     for _, row in df.iterrows():
         alias = row['alias']
         output_file = os.path.join(output_dir, f"{alias}.tsv")
         transformed_data = [
-            [alias, alias, row['forward_file'], 'fastq'],
-            [alias, alias, row['reverse_file'], 'fastq']
+            [alias, alias, row['forward_filename'], 'fastq'],
+            [alias, alias, row['reverse_filename'], 'fastq']
         ]
         output_df = pd.DataFrame(transformed_data, columns=['alias', 'experiment_alias', 'file_name', 'file_type'])
         output_df.to_csv(output_file, sep='\t', index=False)
 
 # Create separate experiment checklist files for each sample
-def create_experiment_checklists(experiment_checklist: str, output_dir: str):
+def create_experiment_checklists(input_tsv: str, output_dir: str):
     df = pd.read_csv(input_tsv, sep='\t')
     df = df[['alias','title','study_alias','sample_alias','design_description','library_name','library_strategy','library_source','library_selection','library_layout','insert_size','library_construction_protocol','platform','instrument_model']]
     os.makedirs(output_dir, exist_ok=True)
@@ -50,9 +50,19 @@ def create_experiment_checklists(experiment_checklist: str, output_dir: str):
         output_df.to_csv(output_file, sep='\t', index=False)
 
 # Create separate sample checklist files for each sample
-def create_sample_checklists(sample_checklist: str, output_dir: str):
+def create_sample_checklists(input_tsv: str, output_dir: str):
     df = pd.read_csv(input_tsv, sep='\t')
     df = df[['alias','title','taxon_id','sample_description','sample collection method','project name','collection date','geographic location (latitude)','geographic location (longitude)','geographic location (region and locality)','broad-scale environmental context','local environmental context','environmental medium','geographic location (country and/or sea)','host common name','host subject id','host taxid','host body site','host life stage','host sex']]
+    os.makedirs(output_dir, exist_ok=True)
+    for _, row in df.iterrows():
+        alias = row['alias']
+        output_file = os.path.join(output_dir, f"{alias}.tsv")
+        output_df = pd.DataFrame([row])
+        output_df.to_csv(output_file, sep='\t', index=False)
+
+def create_microsample_checklists(input_tsv: str, output_dir: str):
+    df = pd.read_csv(input_tsv, sep='\t')
+    df = df[['alias','title','taxon_id','sample_description','sample collection method','project name','collection date','geographic location (latitude)','geographic location (longitude)','geographic location (region and locality)','broad-scale environmental context','local environmental context','environmental medium','geographic location (country and/or sea)','host common name','host subject id','host taxid','host body site','host life stage','host sex','sample_attribute[cryosection]','sample_attribute[Xcoord]','sample_attribute[Ycoord]','sample_attribute[Xcoordpixel]','sample_attribute[Ycoordpixel]','sample_attribute[size]','sample_attribute[buffer]','sample_attribute[sampletype]']]
     os.makedirs(output_dir, exist_ok=True)
     for _, row in df.iterrows():
         alias = row['alias']
@@ -64,8 +74,8 @@ def create_data_dict(metadata: str, directory: str, output_json: str):
     df = pd.read_csv(metadata, sep='\t')
     sample_dict = {
         row['alias']: [
-            os.path.abspath(os.path.join(directory, row['forward_file'])),
-            os.path.abspath(os.path.join(directory, row['reverse_file']))
+            os.path.abspath(os.path.join(directory, row['forward_filename'])),
+            os.path.abspath(os.path.join(directory, row['reverse_filename']))
         ]
         for _, row in df.iterrows()
     }
@@ -129,7 +139,7 @@ def save_json(data, output_dir, filename):
         json.dump(data, f, indent=2)
     print(f"Saved: {filepath}")
 
-def process_tsv(input_tsv, output_dir, username, password):
+def process_cryosection(input_tsv, output_dir, username, password):
     """Reads a TSV file, obtains a token, processes rows, posts to API, and updates relationships."""
 
     # Check if input file exists

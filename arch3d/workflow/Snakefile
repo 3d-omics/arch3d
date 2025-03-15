@@ -2,7 +2,7 @@ configfile: "workflow/config.yaml"
 WORKFLOW = config.get("workflow", None)
 OUTPUT_DIR = config.get("output_dir", None)
 
-if WORKFLOW == "nucleotide":
+if WORKFLOW in ["macro", "micro"]:
 
     # Read JSON containing sample to data file references
     with open(f"{OUTPUT_DIR}/input/input.json", "r") as f:
@@ -31,7 +31,7 @@ if WORKFLOW == "nucleotide":
             runtime=lambda wildcards, input, attempt: max(10, int(input.size_mb / 100) * 2 ** (attempt - 1))
         shell:
             """
-            module load
+            module load ena-upload-cli/0.8.0
             ena-upload-cli \
                 --action add \
                 --center 'University of Copenhagen' \
@@ -43,4 +43,4 @@ if WORKFLOW == "nucleotide":
                 --secret {secret}
             """
 
-if WORKFLOW == "sample":
+if WORKFLOW == "specimen":

@@ -39,19 +39,42 @@ def main():
     )
     subparsers = parser.add_subparsers(dest="command", help="Available workflows")
 
-    # Define subcommands for each workflow
-    subparser_nucleotide = subparsers.add_parser("nucleotide", help="Upload nucleotide data to ENA")
-    subparser_nucleotide.add_argument("-d", "--data", required=True, help="Data directory")
-    subparser_nucleotide.add_argument("-m", "--metadata", required=True, help="Metadata table")
-    subparser_nucleotide.add_argument("-o", "--output", required=True, help="Output directory")
-    subparser_nucleotide.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
-    subparser_nucleotide.add_argument("-p", "--password", required=True, help="EBI Webin password")
+    # Arguments for MACRO data
+    subparser_macro = subparsers.add_parser("macro", help="Upload nucleotide data to ENA")
+    subparser_macro.add_argument("-d", "--data", required=True, help="Data directory")
+    subparser_macro.add_argument("-m", "--metadata", required=True, help="Metadata table")
+    subparser_macro.add_argument("-o", "--output", required=True, help="Output directory")
+    subparser_macro.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
+    subparser_macro.add_argument("-p", "--password", required=True, help="EBI Webin password")
 
-    subparser_sample = subparsers.add_parser("sample", help="Upload sample metadata to BioSamples")
-    subparser_sample.add_argument("-i", "--input", required=True, help="Input metadata table")
-    subparser_sample.add_argument("-o", "--output", required=True, help="Output directory")
-    subparser_sample.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
-    subparser_sample.add_argument("-p", "--password", required=True, help="EBI Webin password")
+    # Arguments for MICRO data
+    subparser_micro = subparsers.add_parser("micro", help="Upload nucleotide data to ENA")
+    subparser_micro.add_argument("-d", "--data", required=True, help="Data directory")
+    subparser_micro.add_argument("-m", "--metadata", required=True, help="Metadata table")
+    subparser_micro.add_argument("-o", "--output", required=True, help="Output directory")
+    subparser_micro.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
+    subparser_micro.add_argument("-p", "--password", required=True, help="EBI Webin password")
+
+    # Arguments for cryosection
+    subparser_cryosection = subparsers.add_parser("cryosection", help="Upload cryosection metadata to BioSamples")
+    subparser_cryosection.add_argument("-i", "--input", required=True, help="Input metadata table")
+    subparser_cryosection.add_argument("-o", "--output", required=True, help="Output directory")
+    subparser_cryosection.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
+    subparser_cryosection.add_argument("-p", "--password", required=True, help="EBI Webin password")
+
+    # Arguments for intestinal section
+    subparser_section = subparsers.add_parser("section", help="Upload cryosection metadata to BioSamples")
+    subparser_section.add_argument("-i", "--input", required=True, help="Input metadata table")
+    subparser_section.add_argument("-o", "--output", required=True, help="Output directory")
+    subparser_section.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
+    subparser_section.add_argument("-p", "--password", required=True, help="EBI Webin password")
+
+    # Arguments for animal
+    subparser_animal = subparsers.add_parser("animal", help="Upload cryosection metadata to BioSamples")
+    subparser_animal.add_argument("-i", "--input", required=True, help="Input metadata table")
+    subparser_animal.add_argument("-o", "--output", required=True, help="Output directory")
+    subparser_animal.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
+    subparser_animal.add_argument("-p", "--password", required=True, help="EBI Webin password")
 
     args = parser.parse_args()
 
@@ -60,22 +83,35 @@ def main():
         sys.exit(1)
 
     ###
-    # Nucleotide
+    # Nucleotide data
     ###
 
-    if args.command == "nucleotide":
+    if args.command == "macro":
         create_secret(args.username, args.password, {args.output / 'input' / '.secret.yml'})
         create_data_dict(args.metadata, args.data, {args.output / 'input' / 'input.json'})
         create_run_checklists(args.metadata, {args.output / 'checklists' / 'run'})
         create_experiment_checklists(args.metadata, {args.output / 'checklists' / 'experiment'})
         create_sample_checklists(args.metadata, {args.output / 'checklists' / 'sample'})
 
+    if args.command == "micro":
+        create_secret(args.username, args.password, {args.output / 'input' / '.secret.yml'})
+        create_data_dict(args.metadata, args.data, {args.output / 'input' / 'input.json'})
+        create_run_checklists(args.metadata, {args.output / 'checklists' / 'run'})
+        create_experiment_checklists(args.metadata, {args.output / 'checklists' / 'experiment'})
+        create_microsample_checklists(args.metadata, {args.output / 'checklists' / 'sample'})
+
     ###
-    # Sample
+    # Spcimen metadata
     ###
 
-    if args.command == "sample":
-        process_tsv(args.input, args.output, args.username, args.password)
+    if args.command == "cryosection":
+        process_cryosection(args.input, args.output, args.username, args.password)
+
+    if args.command == "section":
+        process_section(args.input, args.output, args.username, args.password)
+
+    if args.command == "animal":
+        process_animal(args.input, args.output, args.username, args.password)
 
 if __name__ == "__main__":
     main()
