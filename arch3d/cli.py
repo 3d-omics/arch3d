@@ -87,7 +87,7 @@ def main():
     ###
 
     if args.command == "macro":
-        create_secret(args.username, args.password, {args.output / 'input' / '.secret.yml'})
+        create_secret(args.username, args.password, str(args.output / 'input' / '.secret.yml'))
         create_data_dict(args.metadata, args.data, {args.output / 'input' / 'input.json'})
         create_run_checklists(args.metadata, {args.output / 'checklists' / 'run'})
         create_experiment_checklists(args.metadata, {args.output / 'checklists' / 'experiment'})
