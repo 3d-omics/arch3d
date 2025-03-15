@@ -40,39 +40,39 @@ def main():
     subparsers = parser.add_subparsers(dest="command", help="Available workflows")
 
     # Arguments for MACRO data
-    subparser_macro = subparsers.add_parser("macro", help="Upload nucleotide data to ENA")
+    subparser_macro = subparsers.add_parser("macro", help="Upload macro-scale nucleotide data to ENA")
     subparser_macro.add_argument("-d", "--data", required=True, help="Data directory")
     subparser_macro.add_argument("-m", "--metadata", required=True, help="Metadata table")
-    subparser_macro.add_argument("-o", "--output", required=True, help="Output directory")
+    subparser_macro.add_argument("-o", "--output", required=True, type=pathlib.Path, help="Output directory")
     subparser_macro.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
     subparser_macro.add_argument("-p", "--password", required=True, help="EBI Webin password")
 
     # Arguments for MICRO data
-    subparser_micro = subparsers.add_parser("micro", help="Upload nucleotide data to ENA")
+    subparser_micro = subparsers.add_parser("micro", help="Upload micro-scale nucleotide data to ENA")
     subparser_micro.add_argument("-d", "--data", required=True, help="Data directory")
     subparser_micro.add_argument("-m", "--metadata", required=True, help="Metadata table")
-    subparser_micro.add_argument("-o", "--output", required=True, help="Output directory")
+    subparser_micro.add_argument("-o", "--output", required=True, type=pathlib.Path, help="Output directory")
     subparser_micro.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
     subparser_micro.add_argument("-p", "--password", required=True, help="EBI Webin password")
 
     # Arguments for cryosection
     subparser_cryosection = subparsers.add_parser("cryosection", help="Upload cryosection metadata to BioSamples")
     subparser_cryosection.add_argument("-i", "--input", required=True, help="Input metadata table")
-    subparser_cryosection.add_argument("-o", "--output", required=True, help="Output directory")
+    subparser_cryosection.add_argument("-o", "--output", required=True, type=pathlib.Path, help="Output directory")
     subparser_cryosection.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
     subparser_cryosection.add_argument("-p", "--password", required=True, help="EBI Webin password")
 
     # Arguments for intestinal section
     subparser_section = subparsers.add_parser("section", help="Upload cryosection metadata to BioSamples")
     subparser_section.add_argument("-i", "--input", required=True, help="Input metadata table")
-    subparser_section.add_argument("-o", "--output", required=True, help="Output directory")
+    subparser_section.add_argument("-o", "--output", required=True, type=pathlib.Path, help="Output directory")
     subparser_section.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
     subparser_section.add_argument("-p", "--password", required=True, help="EBI Webin password")
 
     # Arguments for animal
     subparser_animal = subparsers.add_parser("animal", help="Upload cryosection metadata to BioSamples")
     subparser_animal.add_argument("-i", "--input", required=True, help="Input metadata table")
-    subparser_animal.add_argument("-o", "--output", required=True, help="Output directory")
+    subparser_animal.add_argument("-o", "--output", required=True, type=pathlib.Path, help="Output directory")
     subparser_animal.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
     subparser_animal.add_argument("-p", "--password", required=True, help="EBI Webin password")
 
