@@ -11,7 +11,7 @@ from glob import glob
 configfile: "workflow/config.yaml"
 WORKFLOW = config.get("workflow", None)
 OUTPUT_DIR = config.get("output_dir", None)
-PACKAGE_DIR = config["package_dir"]
+PACKAGE_DIR = config.get("package_dir", None)
 
 if WORKFLOW in ["macro", "micro"]:
 
