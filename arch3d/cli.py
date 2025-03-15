@@ -12,10 +12,26 @@ from collections import defaultdict
 from arch3d.utils import *
 
 #####
+# arch3d installation path
+#####
+
+PACKAGE_DIR = Path(__file__).parent
+CONFIG_PATH = PACKAGE_DIR / "workflow" / "config.yaml"
+
+def load_config():
+    """Load fixed variables from config.yaml."""
+    if CONFIG_PATH.exists():
+        with open(CONFIG_PATH, "r") as f:
+            return yaml.safe_load(f)
+    return {}
+
+config_vars = load_config()
+
+#####
 # Function definitions
 #####
 
-def nucleotide_snakemake(workflow, output_dir, profile):
+def run_snakemake(workflow, output_dir, profile):
     snakemake_command = [
         "/bin/bash", "-c",  # Ensures the module system works properly
         f"module load {config_vars['SNAKEMAKE_MODULE']} && "
@@ -104,7 +120,7 @@ def main():
         create_microsample_checklists(args.metadata, str(args.output / 'checklists' / 'sample'))
 
     ###
-    # Spcimen metadata
+    # Specimen metadata
     ###
 
     if args.command == "cryosection":
@@ -115,6 +131,12 @@ def main():
 
     if args.command == "animal":
         process_animal(args.input, args.output, args.username, args.password)
+
+    ###
+    # Launch snakemake
+    ###
+
+    run_snakemake(args.command, args.output, 'slurm')
 
 if __name__ == "__main__":
     main()
