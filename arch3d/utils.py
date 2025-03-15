@@ -52,9 +52,10 @@ def create_experiment_checklists(input_tsv: str, output_dir: str):
 # Create separate sample checklist files for each sample
 def create_sample_checklists(input_tsv: str, output_dir: str):
     df = pd.read_csv(input_tsv, sep='\t')
-    df = df[['alias','sample_alias','title','taxon_id','sample_description','sample collection method','project name','collection date','geographic location (latitude)','geographic location (longitude)','geographic location (region and locality)','broad-scale environmental context','local environmental context','environmental medium','geographic location (country and/or sea)','host common name','host subject id','host taxid','host body site','host life stage','host sex']]
+    df = df[['alias','sample_alias','taxon_id','sample_description','sample collection method','project name','collection date','geographic location (latitude)','geographic location (longitude)','geographic location (region and locality)','broad-scale environmental context','local environmental context','environmental medium','geographic location (country and/or sea)','host common name','host subject id','host taxid','host body site','host life stage','host sex']]
     df = df.rename(columns={'alias': 'filename'})
     df = df.rename(columns={'sample_alias': 'alias'})
+    df['title'] = df['alias']
     os.makedirs(output_dir, exist_ok=True)
     for _, row in df.iterrows():
         filename = row['filename']
@@ -67,6 +68,7 @@ def create_microsample_checklists(input_tsv: str, output_dir: str):
     df = df[['alias','sample_alias','taxon_id','sample_description','sample collection method','project name','collection date','geographic location (latitude)','geographic location (longitude)','geographic location (region and locality)','broad-scale environmental context','local environmental context','environmental medium','geographic location (country and/or sea)','host common name','host subject id','host taxid','host body site','host life stage','host sex','sample_attribute[cryosection]','sample_attribute[Xcoord]','sample_attribute[Ycoord]','sample_attribute[Xcoordpixel]','sample_attribute[Ycoordpixel]','sample_attribute[size]','sample_attribute[buffer]','sample_attribute[sampletype]']]
     df = df.rename(columns={'alias': 'filename'})
     df = df.rename(columns={'sample_alias': 'alias'})
+    df['title'] = df['alias']
     os.makedirs(output_dir, exist_ok=True)
     for _, row in df.iterrows():
         filename = row['filename']
