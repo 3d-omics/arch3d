@@ -50,5 +50,5 @@ if WORKFLOW in ["macro", "micro"]:
                 --run {input.run} \
                 --checklist ERC000013 \
                 --data {input.data} \
-                --secret {secret}
+                --secret {input.secret}
             """
