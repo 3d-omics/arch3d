@@ -42,5 +42,3 @@ if WORKFLOW in ["macro", "micro"]:
                 --data {input.data} \
                 --secret {secret}
             """
-
-if WORKFLOW == "specimen":
