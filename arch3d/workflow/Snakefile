@@ -24,7 +24,7 @@ if WORKFLOW in ["macro", "micro"]:
 
     rule all:
         input:
-            f"{OUTPUT_DIR}/submission_table.tsv"
+            f"{OUTPUT_DIR}/data_submission.tsv"
 
     rule upload:
         input:
@@ -61,7 +61,7 @@ if WORKFLOW in ["macro", "micro"]:
         input:
             expand(f"{OUTPUT_DIR}/output/{{sample}}/receipt.xml", sample=samples)
         output:
-            f"{OUTPUT_DIR}/submission_table.tsv"
+            f"{OUTPUT_DIR}/data_submission.tsv"
         params:
             package_dir={PACKAGE_DIR}
         threads:

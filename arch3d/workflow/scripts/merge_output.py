@@ -7,7 +7,7 @@ def extract_data(xml_file):
     tree = ET.parse(xml_file)
     root = tree.getroot()
 
-    data = Path(xml_file).parent.name  # Extracts 'M302118b' from path
+    data = Path(xml_file).parent.name  # Extracts sample folder name (e.g., 'M302118b')
 
     # Extract values from XML
     experiment_accession = root.find(".//EXPERIMENT").attrib.get("accession", "N/A")
@@ -33,12 +33,14 @@ def extract_data(xml_file):
         "submission_accession": submission_accession,
     }
 
-def main(input_files, output_file):
-    input_files = input_files.split()  # Snakemake passes input as a space-separated string
+def main():
+    input_files = sys.argv[1:-1]  # All input XML files
+    output_file = sys.argv[-1]    # Last argument is the output file
+
     records = [extract_data(xml) for xml in input_files]
 
     df = pd.DataFrame(records)
     df.to_csv(output_file, sep="\t", index=False)
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2])
+    main()
