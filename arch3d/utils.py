@@ -26,7 +26,7 @@ def create_secret(username: str, password: str, output_file: str):
 
 # Create separate run checklist files for each sample
 def create_run_checklists(metadata: str, output_dir: str):
-    df = pd.read_csv(metadata, sep='\t')
+    df = pd.read_csv(metadata, sep=',')
     os.makedirs(output_dir, exist_ok=True)
     for _, row in df.iterrows():
         alias = row['alias']
