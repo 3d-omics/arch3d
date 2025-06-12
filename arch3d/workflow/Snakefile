@@ -13,7 +13,7 @@ WORKFLOW = config.get("workflow", None)
 OUTPUT_DIR = config.get("output_dir", None)
 PACKAGE_DIR = config.get("package_dir", None)
 
-if WORKFLOW in ["macro", "micro"]:
+if WORKFLOW in ["macrosample", "microsample"]:
 
     # Read JSON containing sample to data file references
     with open(f"{OUTPUT_DIR}/input/input.json", "r") as f:

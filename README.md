@@ -4,7 +4,7 @@
 
 ## Installation
 
-**Arch3d** can be installed using pip directly from this github repository. You might need to create a conda environment to ensure all dependencies are accessible.
+**Arch3d** can be installed using pip directly from this Github repository. You might need to create a conda environment to ensure all dependencies are accessible.
 
 ```
 conda create -n arch3d python=3.12 pip -y
@@ -16,6 +16,41 @@ pip install git+https://github.com/3d-omics/arch3d.git
 #if you need to uninstall it:
 pip uninstall arch3d -y
 ```
+
+### Upload specimen metadata to Biosamples
+
+The following commands activate a different procedure not to upload data, but only metadata of "specimens". In this context, specimen refers to any level of organisation above the sample, such as the cryosection, intestinal section or animal.
+
+#### Cryosection metadata
+
+```
+arch3d cryosection \
+  -i {input_table} \
+  -o {output_directory} \
+  -u {username} \
+  -p {password}
+```
+
+#### Intestinal section metadata
+
+```
+arch3d section \
+  -i {input_table} \
+  -o {output_directory} \
+  -u {username} \
+  -p {password}
+```
+
+#### Animal metadata
+
+```
+arch3d animal \
+  -i {input_table} \
+  -o {output_directory} \
+  -u {username} \
+  -p {password}
+```
+
 
 ## Usage
 
@@ -52,40 +87,6 @@ This commands uploads the raw macro-scale data and the required metadata to **EN
 arch3d micro \
   -d {data_directory} \
   -t {metadata_table} \
-  -o {output_directory} \
-  -u {username} \
-  -p {password}
-```
-
-### Upload specimen metadata to Biosamples
-
-The following commands activate a different procedure not to upload data, but only metadata of "specimens". In this context, specimen refers to any level of organisation above the sample, such as the cryosection, intestinal section or animal.
-
-#### Cryosection metadata
-
-```
-arch3d cryosection \
-  -i {input_table} \
-  -o {output_directory} \
-  -u {username} \
-  -p {password}
-```
-
-#### Intestinal section metadata
-
-```
-arch3d section \
-  -i {input_table} \
-  -o {output_directory} \
-  -u {username} \
-  -p {password}
-```
-
-#### Animal metadata
-
-```
-arch3d animal \
-  -i {input_table} \
   -o {output_directory} \
   -u {username} \
   -p {password}

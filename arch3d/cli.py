@@ -70,38 +70,38 @@ def main():
     )
     subparsers = parser.add_subparsers(dest="command", help="Available workflows")
 
-    # Arguments for MACRO data
-    subparser_macro = subparsers.add_parser("macro", help="Upload macro-scale nucleotide data to ENA")
+    # Arguments for MACRO sample data
+    subparser_macro = subparsers.add_parser("macrosample", help="Upload macro-scale nucleotide data to ENA")
     subparser_macro.add_argument("-d", "--data", required=True, help="Data directory")
     subparser_macro.add_argument("-m", "--metadata", required=True, help="Metadata table")
     subparser_macro.add_argument("-o", "--output", required=True, type=pathlib.Path, help="Output directory")
     subparser_macro.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
     subparser_macro.add_argument("-p", "--password", required=True, help="EBI Webin password")
 
-    # Arguments for MICRO data
-    subparser_micro = subparsers.add_parser("micro", help="Upload micro-scale nucleotide data to ENA")
+    # Arguments for MICRO sample data
+    subparser_micro = subparsers.add_parser("microsample", help="Upload micro-scale nucleotide data to ENA")
     subparser_micro.add_argument("-d", "--data", required=True, help="Data directory")
     subparser_micro.add_argument("-m", "--metadata", required=True, help="Metadata table")
     subparser_micro.add_argument("-o", "--output", required=True, type=pathlib.Path, help="Output directory")
     subparser_micro.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
     subparser_micro.add_argument("-p", "--password", required=True, help="EBI Webin password")
 
-    # Arguments for cryosection
-    subparser_cryosection = subparsers.add_parser("cryosection", help="Upload cryosection metadata to BioSamples")
+    # Arguments for microsection
+    subparser_cryosection = subparsers.add_parser("microsection", help="Upload cryosection metadata to BioSamples")
     subparser_cryosection.add_argument("-i", "--input", required=True, help="Input metadata table")
     subparser_cryosection.add_argument("-o", "--output", required=True, type=pathlib.Path, help="Output directory")
     subparser_cryosection.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
     subparser_cryosection.add_argument("-p", "--password", required=True, help="EBI Webin password")
 
-    # Arguments for intestinal section
-    subparser_section = subparsers.add_parser("section", help="Upload cryosection metadata to BioSamples")
+    # Arguments for intestinal segment
+    subparser_section = subparsers.add_parser("segment", help="Upload cryosection metadata to BioSamples")
     subparser_section.add_argument("-i", "--input", required=True, help="Input metadata table")
     subparser_section.add_argument("-o", "--output", required=True, type=pathlib.Path, help="Output directory")
     subparser_section.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
     subparser_section.add_argument("-p", "--password", required=True, help="EBI Webin password")
 
-    # Arguments for animal
-    subparser_animal = subparsers.add_parser("animal", help="Upload cryosection metadata to BioSamples")
+    # Arguments for individual animal
+    subparser_animal = subparsers.add_parser("specimen", help="Upload cryosection metadata to BioSamples")
     subparser_animal.add_argument("-i", "--input", required=True, help="Input metadata table")
     subparser_animal.add_argument("-o", "--output", required=True, type=pathlib.Path, help="Output directory")
     subparser_animal.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
@@ -117,14 +117,10 @@ def main():
         parser.print_help()
         sys.exit(1)
 
-    ###
-    # Nucleotide data
-    ###
-
     input_dir = args.output / "input"
     input_dir.mkdir(parents=True, exist_ok=True)
 
-    if args.command == "macro":
+    if args.command == "macrosample":
         create_secret(args.username, args.password, str(Path(args.output).resolve() / 'input' / '.secret.yml'))
         create_data_dict(args.metadata, args.data, str(Path(args.output).resolve() / 'input' / 'input.json'))
         create_run_checklists(args.metadata, str(Path(args.output).resolve() / 'checklists' / 'run'))
@@ -132,7 +128,7 @@ def main():
         create_sample_checklists(args.metadata, str(Path(args.output).resolve() / 'checklists' / 'sample'))
         run_snakemake(args.command, Path(args.output).resolve(), 'slurm')
 
-    if args.command == "micro":
+    if args.command == "microsample":
         create_secret(args.username, args.password, str(Path(args.output).resolve() / 'input' / '.secret.yml'))
         create_data_dict(args.metadata, args.data, str(Path(args.output).resolve() / 'input' / 'input.json'))
         create_run_checklists(args.metadata, str(Path(args.output).resolve() / 'checklists' / 'run'))
@@ -140,21 +136,14 @@ def main():
         create_microsample_checklists(args.metadata, str(Path(args.output).resolve() / 'checklists' / 'sample'))
         run_snakemake(args.command, Path(args.output).resolve(), 'slurm')
 
-    ###
-    # Specimen metadata
-    ###
+    if args.command == "microsection":
+        process_microsection(args.input, args.output, args.username, args.password)
 
-    if args.command == "cryosection":
-        process_cryosection(args.input, args.output, args.username, args.password)
-        run_snakemake(args.command, Path(args.output).resolve(), 'slurm')
+    if args.command == "segment":
+        process_segment(args.input, args.output, args.username, args.password)
 
-    if args.command == "section":
-        process_section(args.input, args.output, args.username, args.password)
-        run_snakemake(args.command, Path(args.output).resolve(), 'slurm')
-
-    if args.command == "animal":
-        process_animal(args.input, args.output, args.username, args.password)
-        run_snakemake(args.command, Path(args.output).resolve(), 'slurm')
+    if args.command == "specimen":
+        process_specimen(args.input, args.output, args.username, args.password)
 
     ###
     # Unlock
