@@ -25,8 +25,8 @@ def create_secret(username: str, password: str, output_file: str):
         yaml.dump(data, file, default_flow_style=False)
 
 # Create separate run checklist files for each sample
-def create_run_checklists(input_csv: str, output_dir: str):
-    df = pd.read_csv(input_csv, sep='\t')
+def create_run_checklists(metadata: str, output_dir: str):
+    df = pd.read_csv(metadata, sep='\t')
     os.makedirs(output_dir, exist_ok=True)
     for _, row in df.iterrows():
         alias = row['alias']
@@ -39,8 +39,8 @@ def create_run_checklists(input_csv: str, output_dir: str):
         output_df.to_csv(output_file, sep='\t', index=False)
 
 # Create separate experiment checklist files for each sample
-def create_experiment_checklists(input_csv: str, output_dir: str):
-    df = pd.read_csv(input_csv, sep='\t')
+def create_experiment_checklists(metadata: str, output_dir: str):
+    df = pd.read_csv(metadata, sep=',')
     df = df[['alias','title','study_alias','sample_alias','design_description','library_name','library_strategy','library_source','library_selection','library_layout','insert_size','library_construction_protocol','platform','instrument_model']]
     os.makedirs(output_dir, exist_ok=True)
     for _, row in df.iterrows():
@@ -50,8 +50,8 @@ def create_experiment_checklists(input_csv: str, output_dir: str):
         output_df.to_csv(output_file, sep='\t', index=False)
 
 # Create separate sample checklist files for each sample
-def create_sample_checklists(input_csv: str, output_dir: str):
-    df = pd.read_csv(input_csv, sep='\t')
+def create_sample_checklists(metadata: str, output_dir: str):
+    df = pd.read_csv(metadata, sep=',')
     df = df[['alias','sample_alias','taxon_id','sample_description','sample collection method','project name','collection date','geographic location (latitude)','geographic location (longitude)','geographic location (region and locality)','broad-scale environmental context','local environmental context','environmental medium','geographic location (country and/or sea)','host common name','host subject id','host taxid','host body site','host life stage','host sex']]
     df = df.rename(columns={'alias': 'filename'})
     df = df.rename(columns={'sample_alias': 'alias'})
@@ -63,8 +63,8 @@ def create_sample_checklists(input_csv: str, output_dir: str):
         output_df = pd.DataFrame([row.drop('filename')])
         output_df.to_csv(output_file, sep='\t', index=False)
 
-def create_microsample_checklists(input_csv: str, output_dir: str):
-    df = pd.read_csv(input_csv, sep='\t')
+def create_microsample_checklists(metadata: str, output_dir: str):
+    df = pd.read_csv(metadata, sep=',')
     df = df[['alias','sample_alias','taxon_id','sample_description','sample collection method','project name','collection date','geographic location (latitude)','geographic location (longitude)','geographic location (region and locality)','broad-scale environmental context','local environmental context','environmental medium','geographic location (country and/or sea)','host common name','host subject id','host taxid','host body site','host life stage','host sex','sample_attribute[cryosection]','sample_attribute[Xcoord]','sample_attribute[Ycoord]','sample_attribute[Xpixel]','sample_attribute[Ypixel]','sample_attribute[size]','sample_attribute[buffer]','sample_attribute[sampletype]']]
     df = df.rename(columns={'alias': 'filename'})
     df = df.rename(columns={'sample_alias': 'alias'})
@@ -77,7 +77,7 @@ def create_microsample_checklists(input_csv: str, output_dir: str):
         output_df.to_csv(output_file, sep='\t', index=False)
 
 def create_data_dict(metadata: str, directory: str, output_json: str):
-    df = pd.read_csv(metadata, sep='\t')
+    df = pd.read_csv(metadata, sep=',')
     sample_dict = {
         row['alias']: [
             os.path.abspath(os.path.join(directory, row['forward_filename'])),
