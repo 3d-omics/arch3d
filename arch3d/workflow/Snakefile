@@ -61,7 +61,7 @@ if WORKFLOW in ["macrosample", "microsample"]:
         input:
             expand(f"{OUTPUT_DIR}/output/{{sample}}/receipt.xml", sample=samples)
         output:
-            f"{OUTPUT_DIR}/data_submission.tsv"
+            f"{OUTPUT_DIR}/data_submission.tsv",
             localrule: True
         params:
             package_dir={PACKAGE_DIR}
