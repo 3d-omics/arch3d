@@ -1,17 +1,17 @@
 {
   "name": "J024",
-  "accession": "SAMEA117789496",
-  "sraAccession": "ERS23775683",
+  "accession": "SAMEA118545873",
+  "sraAccession": "ERS24935737",
   "webinSubmissionAccountId": "Webin-69627",
   "taxId": 9823,
   "status": "PUBLIC",
   "release": "2025-01-01T15:41:46.085Z",
-  "update": "2025-03-04T05:46:34.157Z",
-  "submitted": "2025-03-04T05:46:33.674Z",
+  "update": "2025-06-12T01:31:46.836Z",
+  "submitted": "2025-06-12T01:31:46.265Z",
   "characteristics": {
     "SRA accession": [
       {
-        "text": "ERS23775683"
+        "text": "ERS24935737"
       }
     ],
     "bioproject": [
@@ -44,28 +44,28 @@
     {
       "source": "SAMEA117789494",
       "type": "derived from",
-      "target": "SAMEA117789496"
+      "target": "SAMEA118545873"
     }
   ],
   "submittedVia": "JSON_API",
-  "create": "2025-03-04T05:46:33.674Z",
+  "create": "2025-06-12T01:31:46.265Z",
   "_links": {
     "self": {
-      "href": "https://www.ebi.ac.uk/biosamples/samples/SAMEA117789496"
+      "href": "https://www.ebi.ac.uk/biosamples/samples/SAMEA118545873"
     },
     "applyCurations": {
-      "href": "https://www.ebi.ac.uk/biosamples/samples/SAMEA117789496{?applyCurations}",
+      "href": "https://www.ebi.ac.uk/biosamples/samples/SAMEA118545873{?applyCurations}",
       "templated": true
     },
     "curationLinks": {
-      "href": "https://www.ebi.ac.uk/biosamples/samples/SAMEA117789496/curationlinks"
+      "href": "https://www.ebi.ac.uk/biosamples/samples/SAMEA118545873/curationlinks"
     },
     "curationLink": {
-      "href": "https://www.ebi.ac.uk/biosamples/samples/SAMEA117789496/curationlinks/{hash}",
+      "href": "https://www.ebi.ac.uk/biosamples/samples/SAMEA118545873/curationlinks/{hash}",
       "templated": true
     },
     "structuredData": {
-      "href": "https://www.ebi.ac.uk/biosamples/structureddata/SAMEA117789496"
+      "href": "https://www.ebi.ac.uk/biosamples/structureddata/SAMEA118545873"
     }
   }
 }

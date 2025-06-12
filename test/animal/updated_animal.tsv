@@ -1,3 +1,3 @@
 name	release	webinSubmissionAccountId	taxId	characteristics@project	characteristics@bioproject	characteristics@organism	characteristics@trial	characteristics@treatment	characteristics@sex	characteristics@checklist	child_samples	accession
-G105	2025-01-01T15:41:46.08563995Z	Webin-69627	9031	3D-omics	PRJEB86267	Gallus gallus	PRJEB86258	female		BSDC00001	SAMEA117789493	SAMEA117789495
-J024	2025-01-01T15:41:46.08563995Z	Webin-69627	9823	3D-omics	PRJEB86267	Sus scrofa	PRJEB86261			BSDC00001	SAMEA117789494	SAMEA117789496
+G105	2025-01-01T15:41:46.08563995Z	Webin-69627	9031	3D-omics	PRJEB86267	Gallus gallus	PRJEB86258	female		BSDC00001	SAMEA117789493	SAMEA118545872
+J024	2025-01-01T15:41:46.08563995Z	Webin-69627	9823	3D-omics	PRJEB86267	Sus scrofa	PRJEB86261			BSDC00001	SAMEA117789494	SAMEA118545873

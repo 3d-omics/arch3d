@@ -86,22 +86,8 @@ def main():
     subparser_micro.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
     subparser_micro.add_argument("-p", "--password", required=True, help="EBI Webin password")
 
-    # Arguments for microsection
-    subparser_cryosection = subparsers.add_parser("microsection", help="Upload cryosection metadata to BioSamples")
-    subparser_cryosection.add_argument("-i", "--input", required=True, help="Input metadata table")
-    subparser_cryosection.add_argument("-o", "--output", required=True, type=pathlib.Path, help="Output directory")
-    subparser_cryosection.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
-    subparser_cryosection.add_argument("-p", "--password", required=True, help="EBI Webin password")
-
-    # Arguments for intestinal segment
-    subparser_section = subparsers.add_parser("segment", help="Upload cryosection metadata to BioSamples")
-    subparser_section.add_argument("-i", "--input", required=True, help="Input metadata table")
-    subparser_section.add_argument("-o", "--output", required=True, type=pathlib.Path, help="Output directory")
-    subparser_section.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
-    subparser_section.add_argument("-p", "--password", required=True, help="EBI Webin password")
-
-    # Arguments for individual animal
-    subparser_animal = subparsers.add_parser("specimen", help="Upload cryosection metadata to BioSamples")
+    # Arguments for BioSample data
+    subparser_animal = subparsers.add_parser("biosample", help="Upload specimen, segment of microsection metadata to BioSamples")
     subparser_animal.add_argument("-i", "--input", required=True, help="Input metadata table")
     subparser_animal.add_argument("-o", "--output", required=True, type=pathlib.Path, help="Output directory")
     subparser_animal.add_argument("-u", "--username", required=True, help="EBI Webin username. e.g, Webin-12345")
@@ -117,10 +103,9 @@ def main():
         parser.print_help()
         sys.exit(1)
 
-    input_dir = args.output / "input"
-    input_dir.mkdir(parents=True, exist_ok=True)
-
     if args.command == "macrosample":
+        input_dir = args.output / "input"
+        input_dir.mkdir(parents=True, exist_ok=True)
         create_secret(args.username, args.password, str(Path(args.output).resolve() / 'input' / '.secret.yml'))
         create_data_dict(args.metadata, args.data, str(Path(args.output).resolve() / 'input' / 'input.json'))
         create_run_checklists(args.metadata, str(Path(args.output).resolve() / 'checklists' / 'run'))
@@ -129,6 +114,8 @@ def main():
         run_snakemake(args.command, Path(args.output).resolve(), 'slurm')
 
     if args.command == "microsample":
+        input_dir = args.output / "input"
+        input_dir.mkdir(parents=True, exist_ok=True)
         create_secret(args.username, args.password, str(Path(args.output).resolve() / 'input' / '.secret.yml'))
         create_data_dict(args.metadata, args.data, str(Path(args.output).resolve() / 'input' / 'input.json'))
         create_run_checklists(args.metadata, str(Path(args.output).resolve() / 'checklists' / 'run'))
@@ -136,14 +123,8 @@ def main():
         create_microsample_checklists(args.metadata, str(Path(args.output).resolve() / 'checklists' / 'sample'))
         run_snakemake(args.command, Path(args.output).resolve(), 'slurm')
 
-    if args.command == "microsection":
-        process_microsection(args.input, args.output, args.username, args.password)
-
-    if args.command == "segment":
-        process_segment(args.input, args.output, args.username, args.password)
-
-    if args.command == "specimen":
-        process_specimen(args.input, args.output, args.username, args.password)
+    if args.command == "biosample":
+        process_biosample(args.input, args.output, args.username, args.password)
 
     ###
     # Unlock
