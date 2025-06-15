@@ -302,7 +302,7 @@ def process_biosample(input_csv, output_dir, username, password):
 
                 # Process child samples - FIXED ORDER
                 if "child_samples" in row and pd.notna(row["child_samples"]):
-                    child_accessions = [child.strip() for child in str(row["child_samples"]).split(",")]
+                    child_accessions = [child.strip() for child in str(row["child_samples"]).split(",") if child.strip()]
                     for child in child_accessions:
                         updated_json["relationships"].append({
                             "source": child,  # Child sample
