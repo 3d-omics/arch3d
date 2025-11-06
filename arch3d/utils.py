@@ -266,13 +266,12 @@ def process_biosample(input_csv, output_dir, username, password):
 
             # Process parent samples
             if "parent_sample" in row and pd.notna(row["parent_sample"]):
-                parent_accessions = [parent.strip() for parent in str(row["parent_sample"]).split(",")]
-                for parent in parent_accessions:
-                    updated_json["relationships"].append({
-                        "source": accession, 
-                        "type": "derived from",
-                        "target": parent 
-                    })
+                parent = str(row["parent_sample"])
+                updated_json["relationships"].append({
+                    "source": accession, 
+                     "type": "derived from",
+                     "target": parent 
+                })
 
             # API Call: Update existing sample
             update_response = update_sample(updated_json, accession, token)
