@@ -270,7 +270,7 @@ def process_biosample(input_csv, output_dir, username, password):
                 for parent in parent_accessions:
                     updated_json["relationships"].append({
                         "source": accession, 
-                        "type": "child of",
+                        "type": "derived from",
                         "target": parent 
                     })
 
