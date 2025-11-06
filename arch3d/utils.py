@@ -254,14 +254,24 @@ def process_biosample(input_csv, output_dir, username, password):
                 "relationships": []
             }
 
-            # Process child samples (formerly derived_from) - FIXED ORDER
+            # Process child samples
             if "child_samples" in row and pd.notna(row["child_samples"]):
                 child_accessions = [child.strip() for child in str(row["child_samples"]).split(",")]
                 for child in child_accessions:
                     updated_json["relationships"].append({
-                        "source": child,  # Child sample (previously was parent)
+                        "source": child,
                         "type": "derived from",
-                        "target": accession  # Parent sample (current sample)
+                        "target": accession 
+                    })
+
+            # Process parent samples
+            if "parent_sample" in row and pd.notna(row["parent_sample"]):
+                parent_accessions = [parent.strip() for parent in str(row["parent_sample"]).split(",")]
+                for parent in parent_accessions:
+                    updated_json["relationships"].append({
+                        "source": accession, 
+                        "type": "child of",
+                        "target": parent 
                     })
 
             # API Call: Update existing sample
