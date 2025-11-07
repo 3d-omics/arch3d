@@ -65,7 +65,7 @@ def create_sample_checklists(metadata: str, output_dir: str):
 
 def create_microsample_checklists(metadata: str, output_dir: str):
     df = pd.read_csv(metadata, sep=',')
-    df = df[['alias','sample_alias','taxon_id','sample_description','sample collection method','project name','collection date','geographic location (latitude)','geographic location (longitude)','geographic location (region and locality)','broad-scale environmental context','local environmental context','environmental medium','geographic location (country and/or sea)','host common name','host subject id','host taxid','host body site','host life stage','host sex','sample_attribute[cryosection]','sample_attribute[Xcoord]','sample_attribute[Ycoord]','sample_attribute[Xpixel]','sample_attribute[Ypixel]','sample_attribute[size]','sample_attribute[buffer]','sample_attribute[sampletype]']]
+    df = df[['alias','sample_alias','taxon_id','sample_description','sample collection method','project name','collection date','geographic location (latitude)','geographic location (longitude)','geographic location (region and locality)','broad-scale environmental context','local environmental context','environmental medium','geographic location (country and/or sea)','host common name','host subject id','host taxid','host body site','host life stage','host sex','sample_attribute[cryosection]','sample_attribute[xcoord]','sample_attribute[ycoord]','sample_attribute[xpixel]','sample_attribute[ypixel]','sample_attribute[size]','sample_attribute[buffer]','sample_attribute[sampletype]']]
     df = df.rename(columns={'alias': 'filename'})
     df = df.rename(columns={'sample_alias': 'alias'})
     df['title'] = df['alias']
@@ -309,23 +309,34 @@ def process_biosample(input_csv, output_dir, username, password):
                     "relationships": []
                 }
 
-                # Process child samples - FIXED ORDER
+                # Process child samples
                 if "child_samples" in row and pd.notna(row["child_samples"]):
                     child_accessions = [child.strip() for child in str(row["child_samples"]).split(",") if child.strip()]
                     for child in child_accessions:
                         updated_json["relationships"].append({
-                            "source": child,  # Child sample
+                            "source": child,
                             "type": "derived from",
-                            "target": accession  # Parent sample
+                            "target": accession
                         })
+
+                # Process parent samples
+                if "parent_sample" in row and pd.notna(row["parent_sample"]):
+                    parent = str(row["parent_sample"])
+                    updated_json["relationships"].append({
+                        "source": accession, 
+                        "type": "derived from",
+                        "target": parent 
+                    })
 
                 # Second API Call: Update sample with relationships
                 update_response = update_sample(updated_json, accession, token)
 
                 if update_response.status_code == 200:
+                    print(f"    Updating relationships")
                     update_response_json = update_response.json()
                     save_json(update_response_json, json_dir, f"{sample_name}_{timestamp}.json")
                 else:
+                    print(f"    Relationship update failed")
                     save_json({"error": update_response.text}, json_dir, f"{sample_name}_{timestamp}.json")
 
             #If initial request yields an error
