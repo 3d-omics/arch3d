@@ -97,6 +97,21 @@ AUTH_URL = "https://www.ebi.ac.uk/ena/submit/webin/auth/token"
 BIOSAMPLE_URL = "https://www.ebi.ac.uk/biosamples/samples"
 STRUCTUREDDATA_URL = "https://www.ebi.ac.uk/biosamples/structureddata"
 
+
+def normalize_taxid(value):
+    """Return taxId as an int (API expects a long), stripping trailing decimals."""
+    if pd.isna(value):
+        return None
+    if isinstance(value, str):
+        value = value.strip()
+        if value == "":
+            return None
+    try:
+        return int(float(value))
+    except (ValueError, TypeError):
+        print(f"Invalid taxId value: {value}. Please provide an integer taxId.")
+        sys.exit(1)
+
 def get_token(username, password):
     """Obtain a temporary authentication token from EBI API."""
     payload = {
@@ -187,13 +202,18 @@ def process_biosample(input_csv, output_dir, username, password):
         sample_name = row["name"]
         accession = row["accession"] if pd.notna(row["accession"]) and row["accession"] != "" else None
 
+        tax_id = normalize_taxid(row["taxId"])
+        if tax_id is None:
+            print(f"Error: Missing taxId for sample {sample_name}.")
+            sys.exit(1)
+
         # Get timestamp
         timestamp = datetime.now().strftime("%Y%m%d%H%M")
 
         # Construct sample JSON payload (either for submission or update)
         sample_json = {
             "name": row["name"],
-            "taxId": str(row["taxId"]),
+            "taxId": tax_id,
             "release": row["release"],
             "webinSubmissionAccountId": row["webinSubmissionAccountId"],
             "characteristics": {}
@@ -249,7 +269,7 @@ def process_biosample(input_csv, output_dir, username, password):
                 "name": row["name"],
                 "release": row["release"],
                 "webinSubmissionAccountId": row["webinSubmissionAccountId"],
-                "taxId": str(row["taxId"]),
+                "taxId": tax_id,
                 "characteristics": sample_json["characteristics"],
                 "relationships": []
             }
@@ -304,7 +324,7 @@ def process_biosample(input_csv, output_dir, username, password):
                     "name": row["name"],
                     "release": row["release"],
                     "webinSubmissionAccountId": row["webinSubmissionAccountId"],
-                    "taxId": str(row["taxId"]),
+                    "taxId": tax_id,
                     "characteristics": sample_json["characteristics"],
                     "relationships": []
                 }
