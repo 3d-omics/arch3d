@@ -65,7 +65,14 @@ def create_sample_checklists(metadata: str, output_dir: str):
 
 def create_microsample_checklists(metadata: str, output_dir: str):
     df = pd.read_csv(metadata, sep=',')
-    df = df[['alias','sample_alias','taxon_id','sample_description','sample collection method','project name','collection date','geographic location (latitude)','geographic location (longitude)','geographic location (region and locality)','broad-scale environmental context','local environmental context','environmental medium','geographic location (country and/or sea)','host common name','host subject id','host taxid','host body site','host life stage','host sex','sample_attribute[cryosection]','sample_attribute[xcoord]','sample_attribute[ycoord]','sample_attribute[xpixel]','sample_attribute[ypixel]','sample_attribute[size]','sample_attribute[buffer]','sample_attribute[sampletype]']]
+    # Match columns case-insensitively so CSV headers like Xcoord/xcoord both work
+    expected_cols = ['alias','sample_alias','taxon_id','sample_description','sample collection method','project name','collection date','geographic location (latitude)','geographic location (longitude)','geographic location (region and locality)','broad-scale environmental context','local environmental context','environmental medium','geographic location (country and/or sea)','host common name','host subject id','host taxid','host body site','host life stage','host sex','sample_attribute[cryosection]','sample_attribute[xcoord]','sample_attribute[ycoord]','sample_attribute[xpixel]','sample_attribute[ypixel]','sample_attribute[size]','sample_attribute[buffer]','sample_attribute[sampletype]']
+    lower_lookup = {col.lower(): col for col in df.columns}
+    missing = [col for col in expected_cols if col not in lower_lookup]
+    if missing:
+        raise KeyError(f"Missing expected columns in metadata: {missing}")
+    selected_cols = [lower_lookup[col] for col in expected_cols]
+    df = df[selected_cols]
     df = df.rename(columns={'alias': 'filename'})
     df = df.rename(columns={'sample_alias': 'alias'})
     df['title'] = df['alias']
